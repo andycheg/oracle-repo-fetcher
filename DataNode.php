@@ -122,11 +122,6 @@ class DataNode {
 		return sha1_file($this->getFilePath());
 	}
 
-	private function openFileChecksum()
-	{
-		return sha1_file($this->getOpenFilePath());
-	}
-
 	/**
 	 * @return string
 	 */

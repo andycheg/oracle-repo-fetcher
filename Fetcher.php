@@ -80,7 +80,7 @@ class Fetcher {
 		}
 
 		$list = new PackageList($primaryNode);
-		foreach ($list as $key => $packageMeta)
+		foreach ($list as $packageMeta)
 		{
 			/** @var PackageMeta $packageMeta */
 			$this->_packages[] = new Package($packageMeta, $this->_outdir, $this->_url);

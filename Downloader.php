@@ -13,6 +13,9 @@ require_once("Hooker.php");
 class Downloader {
 
 	private $_url;
+	/**
+	 * @var Hooker
+	 */
 	private $_hooker;
 
 	public function __construct ($url)
@@ -57,7 +60,8 @@ class Downloader {
 		curl_close($ch);
 	}
 
-	public function progress($size, $downloaded, $us, $u)
+	public function progress($size, $downloaded,
+		/** @noinspection PhpUnusedParameterInspection */ $us, /** @noinspection PhpUnusedParameterInspection */ $u)
 	{
 		if ($size == 0)
 			return;
@@ -66,7 +70,8 @@ class Downloader {
 			$this->_hooker->onProgress($size, $downloaded);
 	}
 
-	public function write($curl, $data)
+
+	public function write(/** @noinspection PhpUnusedParameterInspection */ $curl, $data)
 	{
 		if (!is_null($this->_hooker))
 			$this->_hooker->onWrite($data);

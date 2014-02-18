@@ -16,6 +16,7 @@ class DataNode {
 	private $_type;
 	private $_location;
 	private $_checksum;
+	private $_checksumType;
 	private $_openChecksum;
 
 	private $_url;
@@ -37,10 +38,10 @@ class DataNode {
 					$this->processLocationNode($childNode);
 					break;
 				case "checksum":
-					$this->processChecksumNode($childNode, $this->_checksum);
+					$this->_checksumType = $this->processChecksumNode($childNode, $this->_checksum);
 					break;
 				case "open-checksum":
-					$this->processChecksumNode($childNode, $this->_openChecksum);
+					$this->processChecksumNode($childNode, $this->_openChecksum, NULL);
 					break;
 			}
 		}
@@ -62,10 +63,11 @@ class DataNode {
 		if (is_null($node->attributes->getNamedItem("type")))
 			throw new Exception("No type attribute in checksum node");
 
-		if ($node->attributes->getNamedItem("type")->nodeValue != "sha")
+		if (!in_array($node->attributes->getNamedItem("type")->nodeValue, ["sha", "sha256"]))
 			throw new Exception("Unexpected checksum type");
 
 		$checksum = $node->nodeValue;
+		return $node->attributes->getNamedItem("type")->nodeValue;
 	}
 
 	public function download()
@@ -101,25 +103,27 @@ class DataNode {
 	{
 		if (file_exists($this->getFilePath()))
 		{
-			if ($this->fileChecksum() == $this->_checksum)
+			if ($this->fileChecksum($this->_checksumType) == $this->_checksum)
 				return true;
 			else
 				return false;
 		}
-		/* elseif (file_exists($this->getOpenFilePath()))
-		{
-			if ($this->openFileChecksum() == $this->_openChecksum)
-				return true;
-			else
-				return false;
-		} */
 
 		return false;
 	}
 
-	private function fileChecksum()
+	private function fileChecksum($checkSumtype = 'sha')
 	{
-		return sha1_file($this->getFilePath());
+		switch($checkSumtype)
+		{
+			case 'sha':
+				return sha1_file($this->getFilePath());
+			case 'sha256':
+				return hash_file('sha256', $this->getFilePath());
+			default:
+				throw new Exception("I don't support hash type [$checkSumtype]");
+		}
+		return NULL;
 	}
 
 	/**

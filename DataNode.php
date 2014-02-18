@@ -123,7 +123,6 @@ class DataNode {
 			default:
 				throw new Exception("I don't support hash type [$checkSumtype]");
 		}
-		return NULL;
 	}
 
 	/**

@@ -1,0 +1,13 @@
+{
+    "name": "andycheg/oracle-repo-fetcher",
+    "description": "Package for fetching oracle repository",
+    "minimum-stability": "stable",
+    "license": "GPL",
+    "version": "1.0.1",
+    "authors": [
+        {
+            "name": "Andrey Chegodaev",
+            "email": "andy@chegod.ru"
+        }
+    ]
+}

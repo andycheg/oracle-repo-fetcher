@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 09/01/14
- * Time: 22:21
- */
-
 require_once("Fetcher.php");
 
 
